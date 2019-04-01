@@ -39,12 +39,12 @@ CREATE TABLE stream_test_hotline_agent (
 |--|--|--|
 |instanceName|实例名|无|
 |tableName|表名|无|
-|endPoint|实例访问地址|参见 [服务地址](../../../../../cn.zh-CN/产品简介/名词解释/服务地址.md#) 。|
+|endPoint|实例访问地址|参见[服务地址](../../../../../cn.zh-CN/产品简介/名词解释/服务地址.md#) 。|
 |accessId|访问的id|无|
 |accessKey|访问的键|无|
-|valueColumns|指定插入的字段列名，多个字段以`,`分割。|插入2个字段的输入为`'ID,NAME'`。|
+|valueColumns|指定插入的字段列名|插入多个字段以`,`分割。如`'ID,NAME'`。|
 |bufferSize|去重后的buffer大小|可选，默认值5000，表示输入的数据达到5000条就开始输出。|
-|batchWriteTimeoutMs|写入超时时间|可选，单位为毫秒，默认值为5000。表示如果缓存中的数据在等待5秒后，依然没有达到输出条件，系统会自动输出缓存中的所有数据。|
+|batchWriteTimeoutMs|写入超时的时间|可选，单位为毫秒，默认值为5000。表示如果缓存中的数据在等待5秒后，依然没有达到输出条件，系统会自动输出缓存中的所有数据。|
 |batchSize|一次批量写入的条数|可选，默认值100。|
 |retryIntervalMs|重试间隔时间|可选，单位毫秒，默认值1000。|
 |maxRetryTimes|最大重试次数|可选，默认值100。|
