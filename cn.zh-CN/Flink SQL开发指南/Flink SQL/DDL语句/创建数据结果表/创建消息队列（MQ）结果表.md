@@ -63,7 +63,6 @@ CREATE TABLE source_table (
   type='random'
 );
 
-
 CREATE TABLE result_table (
   mess VARBINARY
 ) WITH (
@@ -74,7 +73,6 @@ CREATE TABLE result_table (
   accessKey='******',
   producerGroup='******'
 );
-
 
 INSERT INTO result_table
 SELECT 
@@ -92,9 +90,9 @@ FROM source_table
 
 |参数|说明|备注|
 |--|--|--|
-|topic|写入的Message Queue队列名|无|
-|endpoint|地址| -   公共云内网接入（阿里云经典网络/VPC）：华东1、华东2、华北1、华北2、华南1香港的区域endpoint的地址是：`onsaddr-internal.aliyun.com:8080` 。
--   公共云公网接入地址是：`http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet`。
+|topic|Message Queue队列名称|无|
+|endpoint|地址| -   公共云内网接入（阿里云经典网络/VPC）：华东1、华东2、华北1、华北2、华南1香港的区域的endpoint地址为`onsaddr-internal.aliyun.com:8080` 。
+-   公共云公网接入地址为`http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet`。
 
  |
 |accessID|填写阿里云accessID|无　|
