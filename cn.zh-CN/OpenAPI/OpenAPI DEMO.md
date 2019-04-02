@@ -22,6 +22,16 @@ POM依赖如下。
     </dependencies>
 ```
 
+**说明：** 若需要依赖aliyun-java-sdk-core，请使用4.3.0及以上版本。4.3.0版本依赖示例如下。
+
+```
+<dependency>
+    <groupId>com.aliyun</groupId>
+    <artifactId>aliyun-java-sdk-core</artifactId>
+    <version>4.3.0</version>
+</dependency>
+```
+
 DEMO如下。
 
 ```language-java
