@@ -65,7 +65,7 @@ Demo中已经分别有三个简单的UAF、UDAF和UDTF的实现，供参考。
 
 将写好的UDF、UDAF或UDTF打成JAR包，在开发页面点击**上传**。
 
-![2314](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/41057/154856423434464_zh-CN.png)
+![2314](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/41057/155488662934464_zh-CN.png)
 
 上传完资源后，选择相应的作业进行引用，然后在作业里声明自定义的函数。
 
@@ -74,5 +74,28 @@ CREATE FUNCTION stringLengthUdf AS 'com.hjc.test.blink.sql.udx.StringLengthUdf';
 
 ```
 
-![2314](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/41057/154856423434466_zh-CN.png)
+![2314](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/41057/155488663034466_zh-CN.png)
+
+## 自定义函数参数获取 {#section_zjd_fbn_jhb .section}
+
+在`UDX`中提供了可选的`open(FunctionContext context)` 方法，`FunctionContext`具备参数传递功能，自定义配置项可以通过此对象来传递。
+
+假设需要在作业中添加如下2个参数。
+
+```language-java
+testKey1=lincoln
+test.key2=todd
+```
+
+以UDTF为例，在open方法中通过`context.getJobParameter`即可获取。示例如下。
+
+```language-java
+public void open(FunctionContext context) throws Exception {
+      String key1 = context.getJobParameter("testKey1", "empty");
+      String key2 = context.getJobParameter("test.key2", "empty");
+      System.err.println(String.format("end open: key1:%s, key2:%s", key1, key2));
+}
+```
+
+**说明：** 具体的作业参数可参见[作业参数](cn.zh-CN/Flink SQL开发指南/配置调优/手动配置调优.md#ul_r1g_lhm_bgb)。
 
