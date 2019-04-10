@@ -3,7 +3,7 @@
 **说明：** 
 
 -   推荐实时计算2.1.1及以上版本使用。
--   维表的Query语法参见： [维表JOIN语句](cn.zh-CN/使用指南/Flink SQL/QUERY语句/维表JOIN语句.md#)。
+-   维表的Query语法参见： [维表JOIN语句](cn.zh-CN/Flink SQL开发指南/Flink SQL/QUERY语句/维表JOIN语句.md#)。
 -   使用ODPS表作为维表，要先赋权读权限给ODPS账号。
 
 ## 创建MaxCompute（ODPS）维表示例 {#section_vhn_ryh_mgb .section}
@@ -15,14 +15,14 @@ CREATE TABLE white_list (
   age int,
   PRIMARY KEY (id), 
   PERIOD FOR SYSTEM_TIME --定义了维表的标识。
-) with (
+) WITH (
   type = 'odps',
-  endPoint = '',
-  project = '',
-  tableName = '',
-  accessId = '',
-  accessKey = '',
-  `partition` = 'ds=20180905',
+  endPoint = 'http://service.cn.maxcompute.aliyun-inc.com/api',
+  project = 'projectName',
+  tableName = 'tableName',
+  accessId = 'yourAccessKeyId',
+  accessKey = 'yourAccessKeySecret',
+  `partition` = 'ds=2018****',
   cache = 'ALL'
 )
 
@@ -40,7 +40,10 @@ CREATE TABLE white_list (
 
 |参数|注释说明|备注|
 |--|----|--|
-|endPoint|ODPS服务地址|必选。参见[配置Endpoint](../../../../../cn.zh-CN/准备工作/配置Endpoint.md#)。|
+|endPoint|ODPS服务地址|必选，参见[MaxCompute开通Region和服务连接对照表](../../../../../cn.zh-CN/准备工作/配置Endpoint.md#section_f2d_51y_5db)。|
+|tunnelEndpoint|MaxCompute Tunnel服务的连接地址|可选，参见[MaxCompute开通Region和服务连接对照表](../../../../../cn.zh-CN/准备工作/配置Endpoint.md#section_f2d_51y_5db)。**说明：** VPC环境下为必填。
+
+|
 |project|ODPS项目名称|必选|
 |tableName|表名|必选|
 |accessId|accessId|必选|
@@ -84,7 +87,7 @@ ALL: 全量缓存策略。即在Job运行前会将远程表中所有数据load�
 2.  搜索表名。
 3.  在数据表详情界面的**明细信息** \> **分区信息**中进行查看。例如：[adm\_dim\_csn\_trans\_shift](https://meta.dw.alibaba-inc.com/store/table/table_detail.html?guid=odps.cndata.adm_dim_csn_trans_shift#/tableDetails/partitionInfo)的分区是`ds=20180905`
 
-    ![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/106707/155192770737584_zh-CN.png)
+    ![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/106707/155486138137584_zh-CN.png)
 
     。
 
