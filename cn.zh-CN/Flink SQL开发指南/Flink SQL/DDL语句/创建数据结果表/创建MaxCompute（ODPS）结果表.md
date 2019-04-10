@@ -4,7 +4,7 @@
 
 ## DDL定义 {#section_jnb_3qf_cgb .section}
 
-实时计算支持使用ODPS 作为结果输出，示例代码如下。
+实时计算支持使用ODPS作为结果输出，示例代码如下。
 
 ```language-sql
 create table odps_output(
@@ -13,12 +13,12 @@ create table odps_output(
     content VARCHAR
 ) with (
     type = 'odps',
-    endPoint = '******',
-    project = '******',
-    tableName = '******',
-    accessId = '******',
-    accessKey = '******',
-    `partition` = '******'
+    endPoint = 'http://service.cn.maxcompute.aliyun-inc.com/api',
+    project = 'projectName',
+    tableName = 'tableName',
+    accessId = 'yourAccessKeyId',
+    accessKey = 'yourAccessKeySecret',
+    `partition` = 'ds=2018****'
 );
 
 ```
@@ -27,7 +27,10 @@ create table odps_output(
 
 |参数|说明|备注|
 |--|--|--|
-|endPoint|ODPS服务地址|必选，参见[配置Endpoint](../../../../../cn.zh-CN/准备工作/配置Endpoint.md#)。|
+|endPoint|ODPS服务地址|必选，参见[MaxCompute开通Region和服务连接对照表](../../../../../cn.zh-CN/准备工作/配置Endpoint.md#section_f2d_51y_5db)。|
+|tunnelEndpoint|MaxCompute Tunnel服务的连接地址|可选，参见[MaxCompute开通Region和服务连接对照表](../../../../../cn.zh-CN/准备工作/配置Endpoint.md#section_f2d_51y_5db)。**说明：** VPC环境下为必填。
+
+|
 |project|ODPS项目名称|必选|
 |tableName|表名|必选|
 |accessId|accessId|必选|
