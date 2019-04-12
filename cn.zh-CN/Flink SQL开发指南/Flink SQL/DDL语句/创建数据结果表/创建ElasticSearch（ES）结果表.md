@@ -9,21 +9,20 @@
 ElasticSearch结果表的实现使用REST API，理论上兼容ElasticSearch的各个版本。实时计算支持使用ES作为结果输出。示例代码如下。
 
 ```language-sql
-create table es_stream_sink(
+ CREATE TABLE es_stream_sink(
   field1 long, 
   field2 varbinary, 
   field3 varchar,
   PRIMARY KEY(field1)
-) with (
+) WIHT (
   type ='elasticsearch',
-  endPoint = 'xxxxxx',
-  accessId = 'xxxxxx',
-  accessKey = 'xxxxxx',
-  index = 'xxxxxx',
-  typeName = 'xxxxxx'
+  endPoint = 'yourEndPoint',
+  accessId = 'yourAccessId',
+  accessKey = 'yourAccessSecret',
+  index = 'yourIndex',
+  typeName = 'yourTypeName'
   ... 
 );
-
 ```
 
 **说明：** ES支持根据primaryKey进行update，primaryKey只能为1个字段。
@@ -53,30 +52,31 @@ create table es_stream_sink(
 |multiThread|是否开启 JestClient 多线程|true|否|
 |ignoreWriteError|是否忽略写入异常|false|否|
 |settings|创建index的settings配置|无|否|
-|updateMode|指定 primary key 后的更新模式|full**说明：** 
+|updateMode|指定 primary key 后的更新模式|full **说明：** 
 
 -   full：全量覆盖
 -   inc：增量更新
 
-|否|
+ |否|
 
 ## 动态索引相关 WITH 参数 {#section_pyd_qms_jgb .section}
 
 |参数|注释说明|默认值|Required|
 |dynamicIndex|是否开启动态索引|false\(true/false\)|否|
 |indexField|抽取索引的字段名|/|dynamicIndex 为 true 时必填，只支持类型 Timestamp/Date/Long\(秒为单位的 timestamp\)|
-|indexInterval|切换索引的周期|d|dynamicIndex 为 true时必填-   d：天
+|indexInterval|切换索引的周期|d|dynamicIndex 为 true时必填 -   d：天
 -   m：月
 -   w：周
 
-|
+ |
 
 **说明：** 
 
-1.  当开启动态索引后， 基本配置中的`index`名称会作为后续创建索引索引的统一Alias，Alias和索引为一对多关系。
-2.  不同的`indexInterval`对应的真实索引名称：
+-   仅Blink2.2.7及以上版本支持动态索引功能。
+-   当开启动态索引后， 基本配置中的`index`名称会作为后续创建索引的统一Alias，Alias和索引为一对多关系。
+-   不同的`indexInterval`对应的真实索引名称：
     -   d -\> Alias + "yyyyMMdd"
     -   m -\> Alias + "yyyyMM"
     -   w -\> Alias + "yyyyMMW"
-3.  对于单个的真实索引可以使用 Index API修改，但是对于Alias只能`get`，若想更新Alias，请参见 [Index Aliases](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html)。
+-   对于单个的真实索引可以使用 Index API修改，但是对于Alias只能`get`，若想更新Alias，请参见[Index Aliases](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html)。
 
