@@ -14,14 +14,15 @@ create table liuxd_user_behavior_test_front (
     from_topic varchar,
     origin_data varchar,
     record_create_time varchar,
-    PRIMARY KEY (row_key)
+    primary key (row_key)
 ) with (
     type = 'cloudhbase',
-    zkQuorum = '2  columnFamily = '*******',
-    tableName = '*******',
+    zkQuorum = '2',  
+    columnFamily = 'yourColumnFamily',
+    tableName = 'yourTableName',
     batchSize = '500'
 )
-
+				
 ```
 
 **说明：** 
