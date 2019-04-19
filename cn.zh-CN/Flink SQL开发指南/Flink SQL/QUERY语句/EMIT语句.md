@@ -20,7 +20,7 @@ EMIT语法的用途目前总结起来主要提供了：控制延迟、数据精�
 EMIT 语法是用来定义输出的策略，即是定义在输出（INSERT INTO）上的动作。当未配置时，保持原有默认行为，即 window 只在 watermark 触发时 EMIT 一个结果。语法：
 
 ```
-INSERTINTO tableName
+INSERT INTO tableName
 query
 EMIT strategy [, strategy]*
 
@@ -28,7 +28,7 @@ strategy ::= {WITH DELAY timeInterval | WITHOUT DELAY}
                 [BEFORE WATERMARK |AFTER WATERMARK]
 
 timeInterval ::='string' timeUnit
-
+			
 ```
 
 -   `WITH DELAY`：声明能忍受的结果延迟，即按指定 interval 进行间隔输出。
@@ -43,7 +43,7 @@ timeInterval ::='string' timeUnit
 
 ## 例子 {#section_pct_dqy_zfb .section}
 
-```
+```language-SQL
 -- 窗口结束之前，按1分钟延迟输出，窗口结束之后无延迟输出
 EMIT 
   WITH DELAY '1'MINUTE BEFORE WATERMARK,
@@ -53,14 +53,15 @@ EMIT
 EMIT WITHOUT DELAY AFTER WATERMARK
 
 -- 全局都按1分钟的延迟输出 (minibatch)
-EMIT WITH DELAY '1'MINUTE-- 窗口结束之前按1分钟延迟输出
+EMIT WITH DELAY '1'MINUTE
+-- 窗口结束之前按1分钟延迟输出
 EMIT WITH DELAY '1'MINUTE BEFORE WATERMARK
-
+			
 ```
 
 -   最大容忍迟到时间
 
-    当配置AFTER 的策略，即表示会接收迟到的数据，窗口的状态就会一直保留以等待迟到数据，那么会等待多久呢？这是一个用户能自定义的参数，即 `blink.state.ttl.ms` 状态的超时时间，默认未配置，如启用了 AFTER 策略，必须显式地配上 `blink.state.ttl.ms` 参数 。例如：`blink.state.ttl.ms=3600000` 最多容忍1小时的迟到数据，超过这个时间的数据会直接丢弃。
+    当配置AFTER 的策略，即表示会接收迟到的数据，窗口的状态就会一直保留以等待迟到数据，那么会等待多久呢？这是一个用户能自定义的参数，即 `blink.state.ttl.ms` 状态的超时时间，默认未配置，如启用了 AFTER 策略，必须显式地配上 `blink.state.ttl.ms` 参数 。例如： `blink.state.ttl.ms=3600000` 最多容忍1小时的迟到数据，超过这个时间的数据会直接丢弃。
 
 -   Example
 
@@ -74,7 +75,7 @@ EMIT WITH DELAY '1'MINUTE BEFORE WATERMARK
       COUNT(*) as cnt
     FROM source
     GROUP BY id, TUMBLE(rowtime, INTERVAL '1' HOUR)
-    
+    					
     ```
 
     默认 `tumble_window` 的输出是需要等到一小时结束才能看到结果，我们希望能尽早能看到窗口的结果（即使是不完整的结果）。例如，我们希望每分钟看到最新的窗口结果：
@@ -83,7 +84,7 @@ EMIT WITH DELAY '1'MINUTE BEFORE WATERMARK
     INSERT INTO result
     SELECT * FROM tumble_window
     EMIT WITH DELAY '1' MINUTE BEFORE WATERMARK -- 窗口结束之前，每隔1分钟输出一次更新结果
-    
+    					
     ```
 
     另外，默认 `tumble_window` 会忽略并丢弃窗口结束后到达的数据，而这部分数据对我们来说很重要，希望能统计进最终的结果里。而且我们知道我们的迟到数据不会太多，且迟到时间不会超过一天以上，并且希望收到迟到的数据立刻就更新结果：
@@ -96,7 +97,7 @@ EMIT WITH DELAY '1'MINUTE BEFORE WATERMARK
     
     -- 增加一天的 state TTL 配置
     blink.state.ttl.ms = 86400000
-    
+    					
     ```
 
 
