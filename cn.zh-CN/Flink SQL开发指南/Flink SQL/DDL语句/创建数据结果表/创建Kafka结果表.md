@@ -15,15 +15,14 @@ create table sink_kafka (
     PRIMARY KEY (messageKey)
 ) with (
     type = 'kafka010',
-    topic = 'xxxxxx',
-    bootstrap.servers = 'xxxxxx'
+    topic = 'yourTopicName',
+    bootstrap.servers = 'yourServerAddress'
 );
-
 ```
 
 **说明：** 
 
--   创建Kafka结果表时，必须显示的指定PRIMARY KEY \(messageKey\)。
+-   创建Kafka结果表时，必须显示的指定primary key \(messageKey\)。
 -   实时计算仅在2.2.6及以上版本中，支持阿里云Kafka或自建Kafka的TPS、RPS等指标信息的显示。
 
 ## WITH参数 {#section_dj3_bqg_cgb .section}
@@ -85,9 +84,9 @@ create table sink_kafka (
     -   `fetch.min.bytes`
     **说明：** 其它可选配置项参考Kafka官方文档进行配置。
 
-    -    [Kafka09](https://kafka.apache.org/0110/documentation.html#consumerconfigs) 
-    -   [Kafka010](https://kafka.apache.org/090/documentation.html#newconsumerconfigs) 
-    -   [Kafka011](https://kafka.apache.org/0102/documentation.html#newconsumerconfigs) 
+    -   [Kafka09](https://kafka.apache.org/0110/documentation.html#consumerconfigs)
+    -   [Kafka010](https://kafka.apache.org/090/documentation.html#newconsumerconfigs)
+    -   [Kafka011](https://kafka.apache.org/0102/documentation.html#newconsumerconfigs)
 
 ## Kafka版本对应关系 {#section_ncs_cqg_cgb .section}
 
@@ -114,8 +113,8 @@ create table sink_kafka (
  PRIMARY KEY (messageKey)
 ) with (
     type = 'kafka010',
-    topic = 'xxxxxx',
-    bootstrap.servers = 'xxxxxx'
+    topic = 'yourTopicName',
+    bootstrap.servers = 'yourServerAddress'
 );
 
 
@@ -126,6 +125,5 @@ SELECT
    cast(nm as VARBINARY) as `message`
 FROM
     datahub_input;
-
 ```
 
