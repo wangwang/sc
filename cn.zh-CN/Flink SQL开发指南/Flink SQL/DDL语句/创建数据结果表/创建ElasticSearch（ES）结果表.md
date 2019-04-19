@@ -10,9 +10,9 @@ ElasticSearch结果表的实现使用REST API，理论上兼容ElasticSearch的�
 
 ```language-sql
  CREATE TABLE es_stream_sink(
-  field1 long, 
-  field2 varbinary, 
-  field3 varchar,
+  field1 LONG, 
+  field2 VARBINARY, 
+  field3 VARCHAR,
   PRIMARY KEY(field1)
 ) WIHT (
   type ='elasticsearch',
@@ -21,14 +21,13 @@ ElasticSearch结果表的实现使用REST API，理论上兼容ElasticSearch的�
   accessKey = 'yourAccessSecret',
   index = 'yourIndex',
   typeName = 'yourTypeName'
-  ... 
 );
 ```
 
-**说明：** ES支持根据primaryKey进行update，primaryKey只能为1个字段。
+**说明：** ES支持根据primary key进行update，primary key只能为1个字段。
 
--   指定primaryKey后，document的id为primaryKey字段的值。
--   未指定primaryKey的document对应的id为随机，详情请参见[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)。
+-   指定primary key后，document的id为primaryKey字段的值。
+-   未指定primary key的document对应的id为随机，详情请参见[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html)。
 -   full更新模式下，后面的doc会完全覆盖之前的doc，不会原地更新字段。
 -   inc更新模式下，会依据传入的字段值更新对应的字段。
 -   所有的更新默认为upsert语义，即insert or update。
@@ -44,7 +43,7 @@ ElasticSearch结果表的实现使用REST API，理论上兼容ElasticSearch的�
 |accessKey|访问实例密钥|无|是|
 |index|索引名称，类似于数据库database的名称。|无|是|
 |typeName|type 名称，类似于数据库的table名称。|无|是|
-|bufferSize|分 batch写入的records 条数|1000|否|
+|bufferSize|流入多少条数据后开始去重|1000|否|
 |maxRetryTimes|异常重试次数|30|否|
 |timeout|读超时，单位为毫秒。|600000|否|
 |discovery|是否开启节点发现。如果开启客户端会 5 分钟刷新一次 server list。|false|否|
@@ -72,7 +71,7 @@ ElasticSearch结果表的实现使用REST API，理论上兼容ElasticSearch的�
 
 **说明：** 
 
--   仅Blink2.2.7及以上版本支持动态索引功能。
+-   仅实时计算2.2.7及以上版本支持动态索引功能。
 -   当开启动态索引后， 基本配置中的`index`名称会作为后续创建索引的统一Alias，Alias和索引为一对多关系。
 -   不同的`indexInterval`对应的真实索引名称：
     -   d -\> Alias + "yyyyMMdd"
