@@ -18,13 +18,11 @@ CREATE TABLE rds_output(
  PRIMARY KEY (id,len)
 ) WITH (
  type='rds',
- url='******',
- tableName='******',
- userName='******',
- password='******'
-);
-
-
+ url='yourDatabaseURL',
+ tableName='yourDatabaseTable',
+ userName='yourDatabaseUserName',
+ password='yourDatabasePassword'
+);		
 ```
 
 **说明：** 
@@ -38,16 +36,16 @@ CREATE TABLE rds_output(
 
 |参数|说明|备注|
 |--|--|--|
-|url|地址|地址请参见：-   [RDS的URL地址](https://help.aliyun.com/document_detail/26128.html?spm=5176.doc43185.6.581.rxQuNz)
+|url|地址|地址请参见： -   [RDS的URL地址](https://help.aliyun.com/document_detail/26128.html?spm=5176.doc43185.6.581.rxQuNz)
 -   [DRDS的URL地址](https://help.aliyun.com/document_detail/50084.html?spm=a2c4g.11186623.6.553.wR7Itn)
 
-|
+ |
 |tableName|表名|无|
 |userName|用户名|无|
-|password|密码|无　|
+|password|密码|无|
 |maxRetryTimes|最大重试次数|可选，默认值为3。|
 |batchSize|一次批量写入的条数|可选，默认值为50。|
-|bufferSize|去重后buffer的大小|可选，需要指定主键才生效。默认值为1000，表示输入的数据达到1000条即开始输出。|
+|bufferSize|流入多少条数据后开始去重|可选，需要指定主键才生效。默认值为1000，表示输入的数据达到1000条即开始输出。|
 |flushIntervalMs|清空缓存的时间间隔|可选，单位为毫秒，默认值为5000。表示如果缓存中的数据在等待5秒后，依然没有达到输出条件，系统会自动输出缓存中的所有数据。|
 |excludeUpdateColumns|忽略指定字段的更新|可选，默认值为空（默认忽略primary key字段）。表示更新主键值相同的数据时，忽略指定字段的更新。|
 |ignoreDelete|是否忽略delete操作|可选，默认为false，表示支持delete功能。|
