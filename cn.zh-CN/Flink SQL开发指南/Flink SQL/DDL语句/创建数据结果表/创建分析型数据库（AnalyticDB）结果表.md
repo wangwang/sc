@@ -18,13 +18,12 @@ content VARCHAR，
 PRIMARY KEY(id)
 ) WITH (
 type='ads',
-url='******',
-tableName='******',
-userName='******',
-password='******',
-batchSize='******'
+url='yourDatabaseURL',
+tableName='yourDatabaseTableName',
+userName='yourDatabaseUserName',
+password='yourDatabasePassword',
+batchSize='20'
 );
-
 ```
 
 **说明：** 
@@ -36,12 +35,12 @@ batchSize='******'
 
 |参数|注释说明|备注|
 |--|----|--|
-|url|jdbc连接地址|AnalyticDB数据库地址 。示例：`url ='jdbc:mysql://databaseName****-cn-shenzhen-a.ads.aliyuncs.com:10014/databaseName'`。**说明：** 
+|url|jdbc连接地址|AnalyticDB数据库地址 。示例：`url ='jdbc:mysql://databaseName****-cn-shenzhen-a.ads.aliyuncs.com:10014/databaseName'`。 **说明：** 
 
--   AnalyticDB数据库连接信息请参见[连接信息](cn.zh-CN/Flink SQL开发指南/数据存储/注册数据存储/注册分析型数据库（AnalyticDB）.md#ol_q5b_s5w_dhb)。
+-   AnalyticDB数据库连接信息参见[注册分析型数据库（AnalyticDB）](cn.zh-CN/Flink SQL开发指南/数据存储/注册数据存储/注册分析型数据库（AnalyticDB）.md#)中**URL地址查询**。
 -   AnalyticDB数据库名称（databaseName）即AnalyticDB实例名称。
 
-|
+ |
 |tableName|表名|无|
 |username|账号|无|
 |password|密码|无|
