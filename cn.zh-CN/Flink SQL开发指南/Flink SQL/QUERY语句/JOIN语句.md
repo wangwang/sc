@@ -7,7 +7,7 @@
 ```language-sql
 tableReference [, tableReference ]* | tableexpression
 [ LEFT ] JOIN tableexpression [ joinCondition ];
-
+				
 ```
 
 **说明：** 
@@ -15,7 +15,7 @@ tableReference [, tableReference ]* | tableexpression
 -   只支持等值连接，不支持不等连接。
 -   只支持INNER JOIN和LEFT OUTER JOIN两种JOIN方式。
 
-## 示例一 {#section_w4k_x54_cgb .section}
+## 示例1 {#section_w4k_x54_cgb .section}
 
 -   测试数据
 
@@ -52,7 +52,7 @@ tableReference [, tableReference ]* | tableexpression
       FROM Orders AS o
       JOIN Products AS p
       ON o.productId = p.productId;
-    
+    						
     ```
 
 -   测试结果
@@ -69,20 +69,20 @@ tableReference [, tableReference ]* | tableexpression
     |`11:24:11`|10|12|4|Beer|`0.25`|
 
 
-## 示例二 {#section_zgj_gv4_cgb .section}
+## 示例2 {#section_zgj_gv4_cgb .section}
 
 -   测试数据
 
     datahub\_stream1：
 
-    |a（bigint）|b（bigint）|c（VARCHAR）|
+    |a（BIGINT）|b（BIGINT）|c（VARCHAR）|
     |---------|---------|----------|
     |0|10|test11|
     |1|10|test21|
 
     datahub\_stream2：
 
-    |a（bigint）|b（bigint）|c（varchar）|
+    |a（BIGINT）|b（BIGINT）|c（VARCHAR）|
     |---------|---------|----------|
     |0|10|test11|
     |1|10|test21|
@@ -97,14 +97,14 @@ tableReference [, tableReference ]* | tableexpression
     JOIN datahub_stream2 AS s2 
     ON s1.a =s2.a
     WHERE s1.a = 0;
-    
+    						
     ```
 
 -   测试结果
 
-    |s1\_c（varchar）|s2\_c（varchar）|
-    |--------------|--------------|
-    |test1|test11|
-    |test1|test31|
+    |s1.c（VARCHAR）|s2.c（VARCHAR）|
+    |-------------|-------------|
+    |test11|test11|
+    |test11|test31|
 
 
