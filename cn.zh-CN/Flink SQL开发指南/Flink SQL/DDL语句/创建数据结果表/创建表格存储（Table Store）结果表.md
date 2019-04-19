@@ -12,20 +12,19 @@
 
 ```language-sql
 CREATE TABLE stream_test_hotline_agent (
- name varchar,
+ name VARCHAR,
  age BIGINT,
  birthday BIGINT,
  PRIMARY KEY (name,age)
 ) WITH (
  type='ots',
- instanceName='******',
- tableName='******',
- accessId='******',
- accessKey='******',
- endPoint='******',
- valueColumns='******'
-);
-
+ instanceName='yourInstanceName',
+ tableName='yourTableName',
+ accessId='yourAccessId',
+ accessKey='yourAccessSecret',
+ endPoint='yourEndpoint',
+ valueColumns='birthday'
+);		
 ```
 
 **说明：** 
@@ -39,11 +38,11 @@ CREATE TABLE stream_test_hotline_agent (
 |--|--|--|
 |instanceName|实例名|无|
 |tableName|表名|无|
-|endPoint|实例访问地址|参见[服务地址](../../../../../cn.zh-CN/产品简介/名词解释/服务地址.md#) 。|
+|endPoint|实例访问地址|参见[服务地址](../../../../cn.zh-CN/产品简介/名词解释/服务地址.md#) 。|
 |accessId|访问的id|无|
 |accessKey|访问的键|无|
 |valueColumns|指定插入的字段列名|插入多个字段以`,`分割。如`'ID,NAME'`。|
-|bufferSize|去重后的buffer大小|可选，默认值5000，表示输入的数据达到5000条就开始输出。|
+|bufferSize|流入多少条数据后开始去重|可选，默认值5000，表示输入的数据达到5000条就开始输出。|
 |batchWriteTimeoutMs|写入超时的时间|可选，单位为毫秒，默认值为5000。表示如果缓存中的数据在等待5秒后，依然没有达到输出条件，系统会自动输出缓存中的所有数据。|
 |batchSize|一次批量写入的条数|可选，默认值100。|
 |retryIntervalMs|重试间隔时间|可选，单位毫秒，默认值1000。|
@@ -59,5 +58,5 @@ CREATE TABLE stream_test_hotline_agent (
 |BOOLEAN|BOOLEAN|
 |DOUBLE|DOUBLE|
 
-**说明：** TableStore结果表须定义有`primary key`，输出数据以[Update方式](cn.zh-CN/Flink SQL开发指南/Flink SQL/DDL语句/创建数据结果表/数据结果表概述.md#ul_tfk_5m2_cgb)写入到现有TableStore表。
+**说明：** TableStore结果表须定义有`primary key`，输出数据以update方式写入到现有TableStore表。update方式说明请参见[数据结果表概述](cn.zh-CN/Flink SQL开发指南/Flink SQL/DDL语句/创建数据结果表/数据结果表概述.md#)中**Update类型**。
 
