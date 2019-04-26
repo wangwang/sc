@@ -21,14 +21,13 @@ create table liuxd_user_behavior_test_front (
     columnFamily = 'yourColumnFamily',
     tableName = 'yourTableName',
     batchSize = '500'
-)
-				
+)	
 ```
 
 **说明：** 
 
 -   `primary key`支持定义多个字段。多个字段会按照`rowkeyDelimiter`（默认为`:`）拼接起来作为`row_key`。
--   HBase做撤回删除操作时，如果column定义了多版本，会把所有版本的值清空。
+-   HBase做撤回删除操作时，如果Column定义了多版本，会把所有版本的值清空。
 
 ## WITH参数 {#section_zdt_m1g_cgb .section}
 
@@ -39,8 +38,13 @@ create table liuxd_user_behavior_test_front (
 |tableName|HBase表名|无|
 |userName|用户名|无|
 |password|密码|无|
-|partitionBy|设置为true之后会在用joinKey做partition，将数据分发到join节点，提高缓存命中率。|可选，默认为false|
-|shuffleEmptyKey|设置为true之后遇到空key会随机往下游做shuffle，否则往0号下游发。|建议打开|
+|partitionBy|是否使用joinKey进行分区|可选，默认为False。设置为True时，使用joinKey进行分区，将数据分发到各JOIN节点，提高缓存命中率。|
+|shuffleEmptyKey|是否将上游EMPTY KEY随机发送到下游节点|可选，默认为False。参数意义如下： -   False：如果上游有多个EMPTY KEY，将会将所有EMPTY KEY发送大同一个JOIN节点。
+-   Te：如果上游有多个EMPTY KEY，将会将所有EMPTY KEY随机发送到各个JOIN节点。
+
+ **说明：** shuffleEmptyKey在partitionedJoin生效后才是使用。
+
+ |
 |columnFamily|列族名|目前只支持插入同一列族|
 |maxRetryTimes|最大尝试次数|可选，默认为10|
 |bufferSize|流入多少条数据后进行去重|默认为5000|
@@ -51,5 +55,5 @@ create table liuxd_user_behavior_test_front (
 |rowkeyDelimiter|rowKey的分隔符|可选，默认为`:`|
 |isDynamicTable|是否为动态表|可选，默认为false|
 
-**说明：** 建议batchsize参数值设置在200到300之间。过大的batchsize值可能导致任务OOM报错。
+**说明：** 建议batchSize参数值设置在200到300之间。过大的batchSize值可能导致任务OOM（内存不足）报错。
 
