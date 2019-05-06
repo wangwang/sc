@@ -1,6 +1,6 @@
 # OpenAPI概览 {#concept_y4c_3cg_qgb .concept}
 
-## OpenAPI概览 {#section_xqx_kdg_qgb .section}
+OpenAPI概览为您列举实时计算所支持的OpenAPI。
 
 ## 作业 {#section_jxm_4dg_qgb .section}
 
@@ -34,33 +34,60 @@
 |[BatchGetInstanceRunSummary](cn.zh-CN/OpenAPI/实例/BatchGetInstanceRunSummary.md#)|批量获取实例运行信息|
 |[GetInstanceResource](cn.zh-CN/OpenAPI/实例/GetInstanceResource.md#)|获取运行实例使用资源|
 |[GetInstance](cn.zh-CN/OpenAPI/实例/GetInstance.md#)|获取运行实例详情|
-|[GetInstanceCheckpoint](cn.zh-CN/OpenAPI/实例/GetInstanceCheckpoint.md#)|获取运行实例的ckeckpoint|
+|[GetInstanceCheckpoint](cn.zh-CN/OpenAPI/实例/GetInstanceCheckpoint.md#)|获取运行实例的Checkpoint|
 |[GetInstanceConfig](cn.zh-CN/OpenAPI/实例/GetInstanceConfig.md#)|获取作业运行参数|
 |[GetInstanceDetail](cn.zh-CN/OpenAPI/实例/GetInstanceDetail.md#)|获取实例运行的DAG图|
-|[GetInstanceExceptions](cn.zh-CN/OpenAPI/实例/GetInstanceExceptions.md#)|获取运行实例的failover信息|
+|[GetInstanceExceptions](cn.zh-CN/OpenAPI/实例/GetInstanceExceptions.md#)|获取运行实例的Failover信息|
 |[GetInstanceFinalState](cn.zh-CN/OpenAPI/实例/GetInstanceFinalState.md#)|获取运行实例最终状态|
 |[GetInstanceMetric](cn.zh-CN/OpenAPI/实例/GetInstanceMetric.md#)|获取运行实例的metric信息|
 |[GetInstanceRunSummary](cn.zh-CN/OpenAPI/实例/GetInstanceRunSummary.md#)|获取作业运行实例的运行概要|
-|[ListInstance](cn.zh-CN/OpenAPI/实例/ListInstance.md#)|获取某个project下所有的运行实例|
+|[ListInstance](cn.zh-CN/OpenAPI/实例/ListInstance.md#)|获取某个项目下所有的运行实例|
 |[ModifyInstanceState](cn.zh-CN/OpenAPI/实例/GetInstanceResource.md#)|修改实例状态|
 |[GetRawPlanJson](cn.zh-CN/OpenAPI/实例/GetRawPlanJson.md#)|获取原始执行计划|
-| | |
 
 ## Package {#section_izp_sdg_qgb .section}
 
 |OpenAPI|描述|
 |-------|--|
 |[CreatePackage](cn.zh-CN/OpenAPI/Package/CreatePackage.md#)|获取Package信息|
-|[DeletePackage](cn.zh-CN/OpenAPI/Package/DeletePackage.md#)|删除package|
-|[GetPackage](cn.zh-CN/OpenAPI/Package/GetPackage.md#)|获得package信息|
-|[ListPackage](cn.zh-CN/OpenAPI/Package/ListPackage.md#)|搜索package|
-|[GetRefPackageJob](cn.zh-CN/OpenAPI/Package/GetRefPackageJob.md#)|获取引用特定package的作业|
-|[UpdatePackage](cn.zh-CN/OpenAPI/Package/UpdatePackage.md#)|更新package|
+|[DeletePackage](cn.zh-CN/OpenAPI/Package/DeletePackage.md#)|删除Package|
+|[GetPackage](cn.zh-CN/OpenAPI/Package/GetPackage.md#)|获得Package信息|
+|[ListPackage](cn.zh-CN/OpenAPI/Package/ListPackage.md#)|搜索Package|
+|[GetRefPackageJob](cn.zh-CN/OpenAPI/Package/GetRefPackageJob.md#)|获取引用特定Package的作业|
+|[UpdatePackage](cn.zh-CN/OpenAPI/Package/UpdatePackage.md#)|更新Package|
 
 ## Queue {#section_myq_tdg_qgb .section}
 
 |OpenAPI|描述|
 |-------|--|
-|[ListProjectBindQueue](cn.zh-CN/OpenAPI/Queue/ListProjectBindQueue.md#)|查询project绑定的队列信息|
-|[ListProjectBindQueueResource](cn.zh-CN/OpenAPI/Queue/ListProjectBindQueueResourceResource.md#)|查询project绑定的队列的资源信息|
+|[CreateQueue](cn.zh-CN/OpenAPI/Queue/CreateQueue.md#)|创建Queue|
+|[DeleteQueue](cn.zh-CN/OpenAPI/Queue/DeleteQueue.md#)|删除Queue|
+|[BindQueue](cn.zh-CN/OpenAPI/Queue/BindQueue.md#)|绑定项目运行需要的Queue|
+|[UnbindQueue](cn.zh-CN/.md#)|解绑项目运行的Queue|
+|[GetClusterQueueInfo](cn.zh-CN/OpenAPI/Queue/GetClusterQueueInfo.md#)|获取集群中Queue的信息|
+|[ListProjectBindQueue](cn.zh-CN/OpenAPI/Queue/ListProjectBindQueue.md#)|查询项目绑定的队列信息|
+|[ListProjectBindQueueResource](cn.zh-CN/OpenAPI/Queue/ListProjectBindQueueResource.md#)|查询项目绑定的队列的资源信息|
+
+## Custer {#section_klr_5gj_b81 .section}
+
+|OpenAPI|描述|
+|-------|--|
+|[CreateCluster](cn.zh-CN/OpenAPI/Cluster/CreateCluster.md#)|创建集群|
+|[ExpandCluster](cn.zh-CN/OpenAPI/Cluster/ExpandCluster.md#)|后付费集群升级|
+|[DestroyCluster](cn.zh-CN/OpenAPI/Cluster/DestroyCluster.md#)|注销集群|
+|[ShrinkCluster](cn.zh-CN/OpenAPI/Cluster/ShrinkCluster.md#)|集群缩容|
+|[ListCluster](cn.zh-CN/OpenAPI/Cluster/ListCluster.md#)|查询已存在集群信息|
+|[ModifyMasterSpec](cn.zh-CN/OpenAPI/Cluster/ModifyMasterSpec.md#)|变更Master机型规格|
+|[GetClusterResource](cn.zh-CN/OpenAPI/Cluster/GetClusterResource.md#)|获取集群资源状态信息|
+|[GetClusterEngineVersions](cn.zh-CN/OpenAPI/Cluster/GetClusterEngineVersions.md#)|获取集群引擎版本|
+|[GetClusterDetails](cn.zh-CN/OpenAPI/Cluster/GetClusterDetails.md#)|获取集群详情|
+
+## Project {#section_odd_84b_xmx .section}
+
+|OpenAPI|描述|
+|-------|--|
+|[CreateProject](cn.zh-CN/OpenAPI/Project/CreateProject.md#)|创建项目|
+|[DeleteProject](cn.zh-CN/OpenAPI/Project/DeleteProject.md#)|删除项目|
+|[GetProject](cn.zh-CN/OpenAPI/Project/GetProject.md#)|获取项目详情|
+|[ListProject](cn.zh-CN/OpenAPI/Project/ListProject.md#)|查询您已有的项目|
 
