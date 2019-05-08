@@ -21,7 +21,7 @@ create table liuxd_user_behavior_test_front (
     columnFamily = 'yourColumnFamily',
     tableName = 'yourTableName',
     batchSize = '500'
-)	
+)    
 ```
 
 **说明：** 
@@ -56,4 +56,36 @@ create table liuxd_user_behavior_test_front (
 |isDynamicTable|是否为动态表|可选，默认为false|
 
 **说明：** 建议batchSize参数值设置在200到300之间。过大的batchSize值可能导致任务OOM（内存不足）报错。
+
+## 动态表 {#section_3k6_x0r_gtp .section}
+
+一些结果数据需要按某列的值作为动态列写入HBase。以每小时的成交数据作为动态列，保存在HBase中的示例如下。
+
+|rowkey|cf:0|cf:1|...|
+|------|----|----|---|
+|20170707|100|200|...|
+
+当isDynamicTable参数值为true时，表明该表为支持动态列的HBase表。
+
+动态表仅支持3列输出，例如，rowkey, column和value。此时第2列（示例中的column）为动态列，其它参数与上述HBase参数一致。
+
+**说明：** 使用动态表时，所有数据类型都会转换为STRING类型再进行输入。
+
+``` {#codeblock_c5q_hwy_ko9 .language-SQL}
+CREATE TABLE stream_test_hotline_agent (
+  name varchar,
+  age varchar,
+  birthday varchar,
+  primary key (name)
+) WITH (
+  type = 'cloudhbase',
+  ...
+columnFamily = 'cf',
+ isDynamicTable ='true')
+```
+
+**说明：** 
+
+-   以上声明中，会把birthday插入到以name为rowkey的cf:age列中。例如，一列数据是`（wang,18,2016-12-12)`，则这条数据会插入rowkey为`wang` 的行，`cf:18`列。
+-   动态表严格按照rowkey column value的顺序，且必须在primary key中定义第1个字段为rowkey。
 
