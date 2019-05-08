@@ -23,23 +23,22 @@
 
 ## 环境搭建 {#section_ck2_gcm_cgb .section}
 
-自定义函数（UDX）的开发需要依赖实时计算的相关JAR包，为了便于用户快速的搭建环境，我们提供了一个UDX开发Demo（`RealtimeCompute-udxDemo.gz`），该Demo为Maven的project，您可使用IntelliJ IDEA直接打开，并在此基础上进行开发。
+自定义函数（UDX）的开发需要依赖实时计算的相关JAR包，为了便于用户快速的搭建环境，我们提供了一个UDX开发DEMO（`RealtimeCompute-udxDemo.gz`），该DEMO为Maven的Project，您可使用IntelliJ IDEA直接打开，并在此基础上进行开发。
 
-Demo中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
+DEMO中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
 
 `[RealtimeCompute-udxDemo.gz](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/69463/cn_zh/1535104736459/RealtimeCompute-udxDemo.gz)`
 
-以上Demo主要使用的依赖jar包如下，如您需要单独使用，可以直接下载：
+以上Demo主要使用的依赖JAR包如下，如您需要单独使用，可以直接下载：
 
-`[flink-streaming-java\_2.11](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543327398632/flink-streaming-java_2.11-blink-2.2.4.jar)`
+-   共享模式（基于实时计算3.0以下版本）
 
-`[flink-table\_2.11](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543327437386/flink-table_2.11-blink-2.2.4.jar)`
+    -   [flink-streaming-java\_2.11](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543327398632/flink-streaming-java_2.11-blink-2.2.4.jar)
+    -   [flink-table\_2.11](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543327437386/flink-table_2.11-blink-2.2.4.jar)
+    -   [flink-core-blink-2.2.4](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543326995841/flink-core-blink-2.2.4.jar)
+    **说明：** 上文中的DEMO包下载后，要将`pom.xml`按照下边示例进行更改。您可以下载基于共享模式的[单例测试案例](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557294154462/RealtimeCompute-udxDemo.zip)。
 
-`[flink-core-blink-2.2.4](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543326995841/flink-core-blink-2.2.4.jar)`
-
-**说明：** 上文中的Demo包下载后，要将`pom.xml`按照下边示例进行更改。
-
-```language-java
+    ``` {#codeblock_m93_8xh_puo .language-java}
     <dependency>
         <groupId>org.apache.flink</groupId>
         <artifactId>flink-core</artifactId>
@@ -47,10 +46,10 @@ Demo中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
         <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-table_2.11</artifactId>
-        <version>blink-2.2.4-SNAPSHOT</version>
-        <scope>provided</scope>
+         <groupId>org.apache.flink</groupId>
+         <artifactId>flink-table_2.11</artifactId>
+         <version>blink-2.2.4-SNAPSHOT</version>
+         <scope>provided</scope>
     </dependency> 
     <dependency>
          <groupId>org.apache.flink</groupId>
@@ -58,8 +57,64 @@ Demo中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
          <version>blink-2.2.4-SNAPSHOT</version>
          <scope>provided</scope>
     </dependency>
-				
-```
+    
+    <!-- 单例测试使用 -->
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.1</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>2.11.12</version>
+    </dependency> 
+    ```
+
+-   独享模式（基于实时计算3.0及以上版本）
+
+    -   [flink-core-blink-3.2.1.jar](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557279822540/flink-core-blink-3.2.1.jar)
+    -   [flink-streaming-java\_2.11-blink-3.2.1.jar](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557279865869/flink-streaming-java_2.11-blink-3.2.1.jar)
+    -   [flink-core-blink-3.2.1.jar](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557279936582/flink-table_2.11-blink-3.2.1.jar)
+    **说明：** 上文中的Demo包下载后，要将`pom.xml`按照下边示例进行更改。
+
+    ``` {#codeblock_lj9_1sg_sqq .language-java}
+    <dependency>
+      <groupId>com.alibaba.blink</groupId>
+      <artifactId>flink-core</artifactId>
+      <version>blink-3.2.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.blink</groupId>
+      <artifactId>flink-table_2.11</artifactId>
+      <version>blink-3.2.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.blink</groupId>
+      <artifactId>flink-streaming-java_2.11</artifactId>
+      <version>blink-3.2.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>     
+    
+    <!-- 单例测试使用 -->
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.1</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>2.11.12</version>
+    </dependency> 
+    ```
+
 
 ## 注册使用 {#section_5q4_9pi_lny .section}
 
