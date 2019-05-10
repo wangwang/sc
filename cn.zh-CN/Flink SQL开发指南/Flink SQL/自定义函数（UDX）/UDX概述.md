@@ -141,6 +141,29 @@ DEMO中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
     ```
 
 
+## 参数与返回值类型 {#section_584_qiv_6ll .section}
+
+实时计算支持定义Java UDX时，使用Java类型作为参数和返回值。下面为实时计算类型和Java类型的映射关系。
+
+|实时计算数类型|Java类型|
+|-------|------|
+|TINYINT|java.lang.Byte|
+|SAMLLINT|java.lang.Short|
+|INT|java.lang.Integer|
+|BIGINT|java.lang.Long|
+|FLOAT|java.lang.Float|
+|DOUBLE|java.lang.Double|
+|DECIMAL|java.math.BigDecimal|
+|BOOLEAN|java.lang.Boolean|
+|DATE|java.sql.Date|
+|TIME|java.sql.Time|
+|TIMESTAMP|java.sql.Timestamp|
+|CHAR|java.lang.Character|
+|STRING|java.lang.String|
+|VARBINARY|java.lang.byte\[\]|
+|ARRAY|java.util.List|
+|MAP|暂不支持|
+
 ## 自定义函数参数获取 {#section_zjd_fbn_jhb .section}
 
 在`UDX`中提供了可选的`open(FunctionContext context)` 方法，`FunctionContext`具备参数传递功能，自定义配置项可以通过此对象来传递。
