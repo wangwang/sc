@@ -4,22 +4,15 @@
 
 **说明：** 目前阿里云实时计算共享模式暂不支持自定义函数，仅独享模式支持自定义函数。
 
-## 简介 {#section_pyp_ccm_cgb .section}
+## UDX分类 {#section_190_h60_4it .section}
 
-实时计算支持3种自定义函数（UDX）：
+实时计算支持以下3类自定义函数：
 
--   UDF（User Defined Function）
-
-    自定义标量函数，输入一条记录的0个、1个或者多个值，返回一个值。
-
--   UDAF（User Defined Aggregation Function）
-
-    自定义聚合函数，将多条记录聚合成一条值。
-
--   UDTF（User Defined Table Function）
-
-    自定义表值函数，能将多条记录转换后再输出，输出记录的个数和输入记录数不需要一一对应，也是唯一能返回多个字段的自定义函数。
-
+|UDX分类|描述|
+|-----|--|
+|UDF（User Defined Function）|用户自定义标量值函数（User Defined Scalar Function）。其输入与输出是一对一的关系，即读入一行数据，写出一条输出值。|
+|UDAF（User Defined Aggregation Function）|自定义聚合函数，其输入与输出是多对一的关系， 即将多条输入记录聚合成一条输出值。可以与SQL中的GROUP BY语句联用。具体语法请参见[聚合函数](../../../../cn.zh-CN/用户指南/SQL/内建函数/聚合函数.md#)。|
+|UDTF（User Defined Table-valued Function）|自定义表值函数，调用一次函数输出多行或多列数据。|
 
 ## 环境搭建 {#section_ck2_gcm_cgb .section}
 
@@ -121,13 +114,13 @@ DEMO中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
 1.  [登录实时计算控制台](https://stream.console.aliyun.com)。
 2.  单击顶部菜单中的开发，进入开发页面。
 3.  在左侧的导航栏中单击**资源引用**。
-4.  在**资源引用**页签的右上角，单击**➕新建资源**，进入上传资源页面。
-5.  输入资源配置信息。
+4.  在**资源引用**页签的右上角，单击**新建资源**。
+5.  在上传资源页面输入资源配置信息。
 
     |参数名称|说明|
     |----|--|
     |上传方式|当前仅支持本地上传。|
-    |资源选择|点击**选择资源**按钮，选择需要引用的资源。|
+    |资源选择|单击**选择资源**，选择需要引用的资源。|
     |资源名称|输入资源名称。|
     |资源备注|输入资源备注信息。|
     |资源类型|选择引用资源类型，JAR、DICTIONARY或PYTHON。|
