@@ -4,7 +4,7 @@ This topic describes the architecture of Realtime Compute exclusive mode.
 
 The following figure shows the architecture of Realtime Compute exclusive mode.
 
-![](images/33597_en-US.png)
+![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/40823/155764225130941_en-US.png)
 
 1.  In Realtime Compute exclusive mode, all your purchased ECS instances are fully hosted in the VPC of the compute cluster. Currently, Realtime Compute exclusive mode does not support logging on to ECS instances.
 2.  When you create a compute cluster, Realtime Compute applies for an Elastic Network Interface \(ENI\) under your Realtime Compute account. You can use the ENI to access all resources in your VPC.
