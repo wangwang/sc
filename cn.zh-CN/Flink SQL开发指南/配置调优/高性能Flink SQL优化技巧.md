@@ -35,7 +35,7 @@
 
     LocalGlobal本质上能够靠localAgg的聚合筛除部分倾斜数据，从而降低globalAgg的热点，从而提升性能。LocalGlobal如何解决数据倾斜问题可以结合下图理解。
 
-    ![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155773265333642_zh-CN.png)
+    ![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155775236233642_zh-CN.png)
 
     -   适用场景
 
@@ -55,7 +55,7 @@
 
     上述的LocalGlobal优化能针对常见普通agg有较好的效果（如sum、count、max、min和avg）。但是对于count distinct收效不明显，原因是count distinct在local聚合时，对于distinct key的去重率不高，导致在global节点仍然存在热点。
 
-    在旧版本用户为了解决count distinct的热点问题时，一般会手动改写成两层聚合（增加按distinct key 取模的打散层），自`2.2.0`版本开始，实时计算提供了count distinct自动打散，我们称之为PartialFinal优化，您无需自己改写成两层聚合。PartialFinal和LocalGlobal的原理对比请参见下图。![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155773265333643_zh-CN.png)
+    在旧版本用户为了解决count distinct的热点问题时，一般会手动改写成两层聚合（增加按distinct key 取模的打散层），自`2.2.0`版本开始，实时计算提供了count distinct自动打散，我们称之为PartialFinal优化，您无需自己改写成两层聚合。PartialFinal和LocalGlobal的原理对比请参见下图。![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155775236333643_zh-CN.png)
 
     -   适用场景
 
@@ -121,7 +121,7 @@
 -   TopN优化方法
     -   无排名优化
 
-        TopN的输出不要带上rownum，最终前端显式时做1次排序，这样能极大地减少输入结果表的数据量。 无排名优化方法详情请参见[TopN语句](https://help.aliyun.com/document_detail/62508.html)。
+        TopN的输出不要带上rownum，最终前端显式时做1次排序，这样能极大地减少输入结果表的数据量。 无排名优化方法详情请参见[TopN语句](cn.zh-CN/Flink SQL开发指南/Flink SQL/QUERY语句/TopN语句.md#)。
 
     -   增加TopN的cache大小
 
