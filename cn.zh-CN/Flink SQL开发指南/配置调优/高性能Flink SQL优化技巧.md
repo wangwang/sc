@@ -2,7 +2,7 @@
 
 本文为您介绍提升性能的Flink SQL推荐写法、推荐配置、推荐函数。
 
-## Group Aggregate优化技巧 {#section_cwh_rcz_zfb .section}
+## Group Aggregate优化技巧 {#section_211_m3y_k5i .section}
 
 -   开启MicroBatch/MiniBatch （提升吞吐）
 
@@ -20,7 +20,7 @@
 
         MicroBatch/MiniBatch默认关闭，开启方式：
 
-        ```
+        ``` {#codeblock_txe_lb2_eix}
         # 攒批的间隔时间，使用microbatch策略时需要加上该配置，且建议和blink.miniBatch.allowLatencyMs保持一致。
         blink.microBatch.allowLatencyMs=5000
         # 使用microbatch时需要保留以下两个minibatch配置。
@@ -35,7 +35,7 @@
 
     LocalGlobal本质上能够靠localAgg的聚合筛除部分倾斜数据，从而降低globalAgg的热点，从而提升性能。LocalGlobal如何解决数据倾斜问题可以结合下图理解。
 
-    ![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155780202333642_zh-CN.png)
+    ![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155781305833642_zh-CN.png)
 
     -   适用场景
 
@@ -55,7 +55,7 @@
 
     上述的LocalGlobal优化能针对常见普通agg有较好的效果（如sum、count、max、min和avg）。但是对于count distinct收效不明显，原因是count distinct在local聚合时，对于distinct key的去重率不高，导致在global节点仍然存在热点。
 
-    在旧版本用户为了解决count distinct的热点问题时，一般会手动改写成两层聚合（增加按distinct key 取模的打散层），自`2.2.0`版本开始，实时计算提供了count distinct自动打散，我们称之为PartialFinal优化，您无需自己改写成两层聚合。PartialFinal和LocalGlobal的原理对比请参见下图。![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155780202433643_zh-CN.png)
+    在旧版本用户为了解决count distinct的热点问题时，一般会手动改写成两层聚合（增加按distinct key 取模的打散层），自`2.2.0`版本开始，实时计算提供了count distinct自动打散，我们称之为PartialFinal优化，您无需自己改写成两层聚合。PartialFinal和LocalGlobal的原理对比请参见下图。![](http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/75347/155781305833643_zh-CN.png)
 
     -   适用场景
 
@@ -85,18 +85,18 @@
 
     -   原始写法
 
-        ```
+        ``` {#codeblock_thi_rla_aam}
         COUNT(distinct visitor_id)as UV1,COUNT(distinctcasewhen is_wireless='y'then visitor_id elsenullend)as UV2
         ```
 
     -   优化写法
 
-        ```
+        ``` {#codeblock_29o_z67_b5d}
         COUNT(distinct visitor_id)as UV1,COUNT(distinct visitor_id) filter (where is_wireless='y')as UV2
         ```
 
 
-## TopN优化技巧 {#section_ncg_d3z_zfb .section}
+## TopN优化技巧 {#section_b0v_rga_gqc .section}
 
 -   TopN算法
 
@@ -106,7 +106,7 @@
 
         **说明：** order by sum（正数）desc时，要加上正数的过滤条件。且已知sum的参数不可能有负数，那么需要加上过滤条件从而告诉优化器这个信息，才能优化出UpdateFastRank算法（仅支持实时计算`2.2.2`及以上版本），如下所示。
 
-        ```
+        ``` {#codeblock_d1g_5k1_1pv}
         SELECT cate_id, seller_id, stat_date, pay_ord_amt  # 不输出rownum字段，能减小对结果表的输出量。
         FROM (SELECT*
               ROW_NUMBER ()OVER(PARTITIONBY cate_id, stat_date   # 注意要有时间字段，否则state过期会导致数据错乱。
@@ -127,13 +127,13 @@
 
         TopN为了提升性能有一个state cache层，cache层能提升对state的访问效率。TopN的cache命中率的计算公式为：
 
-        ```
+        ``` {#codeblock_pzd_1om_3cc}
         cache_hit = cache_size*parallelism/top_n/partition_key_num
         ```
 
         例如，Top100配置缓存10000条，并发50，当您的patitionBy的key维度较大时，如10万级别时，cache命中率只有10000\*50/100/100000=5%，命中率会很低，导致大量的请求都会击中state（磁盘），性能会大幅下降。因此当partitionKey维度特别大时，可以适当加大TopN的cache size，相对应的也建议适当加大TopN节点的heap memory（参见[手动配置调优](cn.zh-CN/Flink SQL开发指南/配置调优/手动配置调优.md#)）。
 
-        ```
+        ``` {#codeblock_j41_lbi_h5u}
         ##默认10000条，调整TopN cahce到20万，那么理论命中率能达200000*50/100/100000 = 100%。
         blink.topn.cache.size=200000
         ```
@@ -143,9 +143,9 @@
         比如每天的排名，要带上day字段。否则TopN的结果到最后会由于state ttl有错乱。
 
 
-## 高效去重方案 {#section_yjb_nkz_zfb .section}
+## 高效去重方案 {#section_qfl_p2j_yak .section}
 
-**说明：** 高效去重方案仅支持实时计算3.21及以上版本。
+**说明：** 高效去重方案仅支持实时计算3.2.1及以上版本。
 
 一些场景下，实时计算的源数据中存在重复数据。去重成为了用户经常反馈的需求。实时计算去重方案有保留第一条（Deduplicate Keep FirstRow）和保留最后一条（Deduplicate Keep LastRow）2种。
 
@@ -153,7 +153,7 @@
 
     由于 SQL 上没有直接支持去重的语法，还要灵活的保留第一条或保留最后一条。因此我们使用了 SQL 的 ROW\_NUMBER OVER WINDOW 功能来实现去重语法。这非常像我们 TopN 支持的方案。实际上去重就是一种特殊的 TopN。
 
-    ``` {#codeblock_sw1_l1g_bms}
+    ``` {#codeblock_xbu_z8a_6bl}
     SELECT *
     FROM (
        SELECT *,
@@ -186,7 +186,7 @@
 
     保留首行的去重策略：保留KEY下第一条出现的数据，之后出现该KEY下的数据会被丢弃掉。因为STATE中只存储了KEY数据，因此性能较优。示例如下。
 
-    ``` {#codeblock_a2v_9zz_zrl .language-SQL}
+    ``` {#codeblock_1zb_eds_55j .language-SQL}
     SELECT *
     FROM (
       SELECT *,
@@ -202,7 +202,7 @@
 
     保留末行的去重策略：保留KEY下最后一条出现的数据。性能略优于LAST\_VALUE函数。示例如下。
 
-    ``` {#codeblock_8p8_ku8_93z .language-SQL}
+    ``` {#codeblock_ozv_9m5_bf4 .language-SQL}
     SELECT *
     FROM (
       SELECT *,
@@ -215,7 +215,7 @@
     **说明：** 以上示例是将T表按照b和d字段进行去重，并按照业务时间保留最后一条数据。rowtime在这里是源表T中的一个具有Event Time属性的字段。
 
 
-## 高效的内置函数 {#section_qqb_clz_zfb .section}
+## 高效的内置函数 {#section_m66_ru0_adj .section}
 
 -   使用内置函数替换自定义函数
 
@@ -242,7 +242,7 @@
     正则表达式是非常耗时的操作，对比加减乘除通常有百倍的性能开销，而且正则表达式在某些极端情况下[可能会进入无限循环](https://stackoverflow.com/questions/4500507/infinite-loop-in-regex-in-java)，导致作业卡住。建议使用LIKE。正则函数包括：[REGEXP](cn.zh-CN/Flink SQL开发指南/Flink SQL/内置函数/字符串函数/REGEXP.md#), [REGEXP\_EXTRACT](cn.zh-CN/Flink SQL开发指南/Flink SQL/内置函数/字符串函数/REGEXP_EXTRACT.md#), [REGEXP\_REPLACE](cn.zh-CN/Flink SQL开发指南/Flink SQL/内置函数/字符串函数/REGEXP_REPLACE.md#)。
 
 
-## 网络传输的优化 {#section_hy1_gmz_zfb .section}
+## 网络传输的优化 {#section_6rk_cy8_h47 .section}
 
 目前常见的Partitioner 策略包括：
 
@@ -263,11 +263,11 @@
     例如上游是5个并发，下游是10个并发。当使用Rebalance时，上游每个并发会轮询发给下游10个并发。当使用Rescale时，上游每个并发只需轮询发给下游2个并发。因为 channel个数变少了，subpartition的buffer填充速度能变快，能提高网络效率。当上游的数据比较均匀时，且上下游的并发数成比例时，可以使用Rescale替换Rebalance。参数：`enable.rescale.shuffling=true`，默认关闭。
 
 
-## 推荐的优化配置方案 {#section_rfj_vmz_zfb .section}
+## 推荐的优化配置方案 {#section_ggn_k35_thn .section}
 
 综上所述，作业建议使用如下的推荐配置：
 
-```
+``` {#codeblock_6gc_bm9_tus}
 # EXACTLY_ONCE语义
 blink.checkpoint.mode=EXACTLY_ONCE
 # checkpoint间隔时间，单位毫秒。
