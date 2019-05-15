@@ -65,19 +65,19 @@
     }
     ```
 
--   SORTEDSET类型
+-   HASHMAP类型
 
-    DDL只有3列：第1列为key；第2列为score；第3列为value。插入数据，对应的Redis命令为`add key score value`。
+    DDL只有3列：第1列为key；第2列为hash\_key；第3列为hash\_key对应的hash\_value。插入数据，对应的Redis命令为`hmset key hash_key hash_value`。
 
-    ``` {#codeblock_jh9_u0f_uwg}
+    ``` {#codeblock_vou_p6p_sf5}
     create table resik_output {
       a varchar,
-      b double,  --必须为DOUBLE类型。
+      b varchar, 
       c varchar,
       primary key(a)
     } with {
       type = 'redis',
-      mode = 'sortedset',
+      mode = 'hashmap',
       host = '${redisHost}', -- 例如，'127.0.0.1'。
       port = '${redisPort}', -- 例如，'6379'。
       dbNum = '${dbNum}', -- 默认为0。
@@ -85,11 +85,11 @@
     }
     ```
 
--   HASHMAP类型
+-   SORTEDSET类型
 
-    DDL只有3列：第1列为key；第2列为hash\_key；第3列为hash\_key对应的hash\_value。插入数据，对应的Redis命令为`hmset key hash_key hash_value`。
+    DDL只有3列：第1列为key；第2列为score；第3列为value。插入数据，对应的Redis命令为`add key score value`。
 
-    ``` {#codeblock_mf5_gwb_65l}
+    ``` {#codeblock_jh9_u0f_uwg}
     create table resik_output {
       a varchar,
       b double,  --必须为DOUBLE类型。
@@ -122,4 +122,5 @@
 |port|Redis server对应端口|否|默认值为6379|
 |dbNum|Redis server对应数据库序号|默认值为0|
 |ignoreDelete|是否忽略Retraction消息|默认值为false，可取值为ture或false。如果设置为true，收到Retraction时，同时删除数据对应的key及之前插入的数据。|
+|password|Redis Server 对应的密码|用户配置参数|
 
