@@ -2,7 +2,7 @@
 
 本文为您介绍如何为实时计算自定义函数搭建环境和使用。
 
-**说明：** 目前阿里云实时计算共享模式暂不支持自定义函数，仅独享模式支持自定义函数。
+**说明：** 仅独享模式支持自定义函数。
 
 ## UDX分类 {#section_190_h60_4it .section}
 
@@ -11,20 +11,20 @@
 |UDX分类|描述|
 |-----|--|
 |UDF（User Defined Function）|用户自定义标量值函数（User Defined Scalar Function）。其输入与输出是一对一的关系，即读入一行数据，写出一条输出值。|
-|UDAF（User Defined Aggregation Function）|自定义聚合函数，其输入与输出是多对一的关系， 即将多条输入记录聚合成一条输出值。可以与SQL中的GROUP BY语句联用。具体语法请参见[聚合函数](../../../../cn.zh-CN/用户指南/SQL/内建函数/聚合函数.md#)。|
+|UDAF（User Defined Aggregation Function）|自定义聚合函数，其输入与输出是多对一的关系， 即将多条输入记录聚合成一条输出值。可以与SQL中的GROUP BY语句联用。具体语法请参见[聚合函数](../../../../cn.zh-CN/开发/SQL及函数/内建函数/聚合函数.md#)。|
 |UDTF（User Defined Table-valued Function）|自定义表值函数，调用一次函数输出多行或多列数据。|
 
 ## 环境搭建 {#section_ck2_gcm_cgb .section}
 
-自定义函数（UDX）的开发需要依赖实时计算的相关JAR包，为了便于用户快速的搭建环境，我们提供了一个UDX开发DEMO（`RealtimeCompute-udxDemo.gz`），该DEMO为Maven的Project，您可使用IntelliJ IDEA直接打开，并在此基础上进行开发。
+自定义函数（UDX）的开发需要依赖实时计算的相关JAR包，为了便于您快速的搭建环境，我们提供了一个UDX开发DEMO（`RealtimeCompute-udxDemo.gz`），该DEMO为Maven的Project，您可使用IntelliJ IDEA直接打开，并在此基础上进行开发。
 
 DEMO中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
 
 `[RealtimeCompute-udxDemo.gz](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/69463/cn_zh/1535104736459/RealtimeCompute-udxDemo.gz)`
 
-以上Demo主要使用的依赖JAR包如下，如您需要单独使用，可以直接下载：
+以上DEMO主要使用的依赖JAR包如下，如您需要单独使用，可以直接下载：
 
--   共享模式（基于实时计算3.0以下版本）
+-   基于实时计算3.0以下版本
 
     -   [flink-streaming-java\_2.11](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543327398632/flink-streaming-java_2.11-blink-2.2.4.jar)
     -   [flink-table\_2.11](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1543327437386/flink-table_2.11-blink-2.2.4.jar)
@@ -66,12 +66,12 @@ DEMO中已经分别有3个简单的UDF、UDAF和UDTF的实现，供参考。
     </dependency> 
     ```
 
--   独享模式（基于实时计算3.0及以上版本）
+-   基于实时计算3.0及以上版本
 
     -   [flink-core-blink-3.2.1.jar](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557279822540/flink-core-blink-3.2.1.jar)
     -   [flink-streaming-java\_2.11-blink-3.2.1.jar](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557279865869/flink-streaming-java_2.11-blink-3.2.1.jar)
-    -   [flink-core-blink-3.2.1.jar](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557279936582/flink-table_2.11-blink-3.2.1.jar)
-    **说明：** 上文中的Demo包下载后，要将`pom.xml`按照下边示例进行更改。
+    -   [flink-table\_2.11-blink-3.2.1.jar](http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/98378/cn_zh/1557279936582/flink-table_2.11-blink-3.2.1.jar)
+    **说明：** 上文中的DEMO包下载后，要将`pom.xml`按照下边示例进行更改。
 
     ``` {#codeblock_lj9_1sg_sqq .language-java}
     <dependency>
